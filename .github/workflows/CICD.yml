@@ -36,9 +36,9 @@ jobs:
     # docker 이미지를 빌드하고 tar 파일로 저장
     - name: Build Docker image
       run: |
-        docker build -t mybible-api .
-        docker save -o ./mybible-api.tar mybible-api
-        chmod 664 mybible-api.tar
+        docker build -t mybibleAdmin-api .
+        docker save -o ./mybibleAdmin-api.tar mybibleAdmin-api
+        chmod 664 mybibleAdmin-api.tar
 
     # 비드한 도커 이미지 파일을 EC2로 전송 (SCP 사용)
     - name: Transfer Docker image to EC2
@@ -64,15 +64,15 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           # 기존 컨테이너 종료 및 삭제
-          sudo docker stop mybible-api || true
-          sudo docker rm mybible-api || true
+          sudo docker stop mybibleAdmin-api || true
+          sudo docker rm mybibleAdmin-api || true
 
           # 도커 이미지 로드
-          sudo docker load -i /home/ubuntu/mybible-api.tar
+          sudo docker load -i /home/ubuntu/mybibleAdmin-api.tar
 
           # 도커 컨테이너 실행
           sudo docker run -d \
-            --name mybible-api \
+            --name mybibleAdmin-api \
             -p 8081:8081 \
             mybible-api
     
