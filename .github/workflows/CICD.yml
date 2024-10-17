@@ -47,7 +47,7 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
-        source: ./mybible-api.tar
+        source: ./mybibleadmin-api.tar
         target: /home/ubuntu
 
   deploy:
@@ -74,6 +74,6 @@ jobs:
           sudo docker run -d \
             --name mybibleadmin-api \
             -p 8081:8081 \
-            mybible-api
+            mybibleadmin-api
     
         
