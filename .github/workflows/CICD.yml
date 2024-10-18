@@ -14,6 +14,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # env 파일에서 변수 가져오기
+    - name: Load environment variables
+      run: |
+          set -o allexport
+          source ./deploy-config.env
+          set +o allexport
+
     # install java
     - name: Install JDK 17
       uses: actions/setup-java@v4
@@ -36,9 +43,9 @@ jobs:
     # docker 이미지를 빌드하고 tar 파일로 저장
     - name: Build Docker image
       run: |
-        docker build -t mybibleadmin-api .
-        docker save -o ./mybibleadmin-api.tar mybibleadmin-api
-        chmod 664 mybibleadmin-api.tar
+        docker build -t ${PROJECT_NAME} .
+        docker save -o ./${PROJECT_NAME}.tar ${PROJECT_NAME}
+        chmod 664 ${PROJECT_NAME}.tar
 
     # 비드한 도커 이미지 파일을 EC2로 전송 (SCP 사용)
     - name: Transfer Docker image to EC2
@@ -47,7 +54,7 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
-        source: ./mybibleadmin-api.tar
+        source: ./${PROJECT_NAME}.tar
         target: /home/ubuntu
 
   deploy:
@@ -64,16 +71,16 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           # 기존 컨테이너 종료 및 삭제
-          sudo docker stop mybibleadmin-api || true
-          sudo docker rm mybibleadmin-api || true
+          sudo docker stop ${PROJECT_NAME} || true
+          sudo docker rm ${PROJECT_NAME} || true
 
           # 도커 이미지 로드
-          sudo docker load -i /home/ubuntu/mybibleadmin-api.tar
+          sudo docker load -i /home/ubuntu/${PROJECT_NAME}.tar
 
           # 도커 컨테이너 실행
           sudo docker run -d \
-            --name mybibleadmin-api \
-            -p 8081:8081 \
+            --name ${PROJECT_NAME} \
+            -p ${PORT}:${PORT} \
             mybibleadmin-api
     
         
