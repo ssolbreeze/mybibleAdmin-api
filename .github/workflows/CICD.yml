@@ -20,11 +20,15 @@ jobs:
         set -o allexport
         source ./deploy-config.env
         set +o allexport
+        echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_ENV
+        echo "PORT=$PORT" >> $GITHUB_ENV
 
     - name: Check environment variables
       run: |
         echo "PROJECT_NAME is $PROJECT_NAME"
         echo "PORT is $PORT"
+        echo "PROJECT_NAME is ${{ env.PROJECT_NAME }}"
+        echo "PORT is ${{ env.PORT }}"
 
     # install java
     - name: Install JDK 17
