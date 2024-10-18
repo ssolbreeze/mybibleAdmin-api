@@ -43,9 +43,9 @@ jobs:
     # docker 이미지를 빌드하고 tar 파일로 저장
     - name: Build Docker image
       run: |
-        docker build -t ${PROJECT_NAME} .
-        docker save -o ./${PROJECT_NAME}.tar ${PROJECT_NAME}
-        chmod 664 ${PROJECT_NAME}.tar
+        docker build -t $PROJECT_NAME .
+        docker save -o ./$PROJECT_NAME.tar $PROJECT_NAME
+        chmod 664 $PROJECT_NAME.tar
 
     # 비드한 도커 이미지 파일을 EC2로 전송 (SCP 사용)
     - name: Transfer Docker image to EC2
