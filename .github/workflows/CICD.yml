@@ -22,6 +22,8 @@ jobs:
         set +o allexport
         echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_ENV
         echo "PORT=$PORT" >> $GITHUB_ENV
+        echo "::set-output name=PROJECT_NAME::$PORT"
+        echo "::set-output name=PORT::$PROJECT_NAME"
 
     - name: Check environment variables
       run: |
@@ -72,7 +74,7 @@ jobs:
     
     - name: Check environment variables
       run: |
-        echo "PROJECT_NAME is $PROJECT_NAME"
+        echo "PROJECT_NAME is ${{ needs.build.outputs.PROJECT_NAME }}"
         echo "PORT is $PORT"
         echo "PROJECT_NAME is ${{ env.PROJECT_NAME }}"
         echo "PORT is ${{ env.PORT }}"
