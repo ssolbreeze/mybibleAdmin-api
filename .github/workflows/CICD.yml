@@ -53,8 +53,8 @@ jobs:
     - name: Build Docker image
       run: |
         docker build -t $PROJECT_NAME .
-        docker save -o ./$PROJECT_NAME.tar $PROJECT_NAME
-        chmod 664 $PROJECT_NAME.tar
+        docker save -o ./${{ env.PROJECT_NAME }}.tar ${{ env.PROJECT_NAME }}
+        chmod 664 ${{ env.PROJECT_NAME }}.tar
 
     # 비드한 도커 이미지 파일을 EC2로 전송 (SCP 사용)
     - name: Transfer Docker image to EC2
@@ -63,7 +63,7 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
-        source: ./${PROJECT_NAME}.tar
+        source: ./${{ env.PROJECT_NAME }}.tar
         target: /home/ubuntu
 
   deploy:
@@ -80,16 +80,16 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           # 기존 컨테이너 종료 및 삭제
-          sudo docker stop ${PROJECT_NAME} || true
-          sudo docker rm ${PROJECT_NAME} || true
+          sudo docker stop ${{ env.PROJECT_NAME }} || true
+          sudo docker rm ${{ env.PROJECT_NAME }} || true
 
           # 도커 이미지 로드
-          sudo docker load -i /home/ubuntu/${PROJECT_NAME}.tar
+          sudo docker load -i /home/ubuntu/${{ env.PROJECT_NAME }}.tar
 
           # 도커 컨테이너 실행
           sudo docker run -d \
-            --name ${PROJECT_NAME} \
-            -p ${PORT}:${PORT} \
+            --name ${{ env.PROJECT_NAME }} \
+            -p ${{ env.PORT }}:${{ env.PORT }} \
             mybibleadmin-api
     
         
