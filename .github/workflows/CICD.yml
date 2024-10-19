@@ -22,14 +22,13 @@ jobs:
         set +o allexport
         echo "PROJECT_NAME=$PROJECT_NAME" >> $GITHUB_ENV
         echo "PORT=$PORT" >> $GITHUB_ENV
-        echo "::set-output name=PROJECT_NAME::$PORT"
-        echo "::set-output name=PORT::$PROJECT_NAME"
-        echo "test: $GITHUB_ACTION_REPOSITORY"
 
     - name: Check environment variables
       run: |
         echo "PROJECT_NAME is $PROJECT_NAME"
         echo "PORT is $PORT"
+        echo "SERVER_PORT IS ${{ secrets.SERVER_PORT }}"
+        echo "REPO_NAME IS $REPO_NAME"
 
     # install java
     - name: Install JDK 17
