@@ -84,7 +84,7 @@ jobs:
           # 도커 컨테이너 실행
           sudo docker run -d \
             --name ${{ vars.REPO_NAME }} \
-            -p ${{ vars.REPO_NAME }}:${{ vars.REPO_NAME }} \
+            -p ${{ secrets.SERVER_PORT }}:${{ secrets.SERVER_PORT }} \
             ${{ vars.REPO_NAME }}
     
         
