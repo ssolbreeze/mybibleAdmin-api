@@ -25,7 +25,6 @@ jobs:
         echo "::set-output name=PROJECT_NAME::$PORT"
         echo "::set-output name=PORT::$PROJECT_NAME"
         echo "test: $GITHUB_ACTION_REPOSITORY"
-        echo "test: ${{ GITHUB_ACTION_REPOSITORY }}"
 
     - name: Check environment variables
       run: |
