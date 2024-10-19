@@ -85,6 +85,6 @@ jobs:
           sudo docker run -d \
             --name ${{ vars.REPO_NAME }} \
             -p ${{ vars.REPO_NAME }}:${{ vars.REPO_NAME }} \
-            $PROJECT_NAME
+            ${{ vars.REPO_NAME }}
     
         
