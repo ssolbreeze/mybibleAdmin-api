@@ -28,7 +28,7 @@ jobs:
         echo "PROJECT_NAME is $PROJECT_NAME"
         echo "PORT is $PORT"
         echo "SERVER_PORT IS ${{ secrets.SERVER_PORT }}"
-        echo "REPO_NAME IS $REPO_NAME"
+        echo "REPO_NAME IS ${{ vars.REPO_NAME }}"
 
     # install java
     - name: Install JDK 17
