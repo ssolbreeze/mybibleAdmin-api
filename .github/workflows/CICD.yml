@@ -10,10 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Github Repository에서 코드 체크아웃
-    - name: Checkout code
-      uses: actions/checkout@v4
-
     # env 파일에서 변수 가져오기
     - name: Load environment variables
       run: |
